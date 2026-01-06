@@ -1,0 +1,24 @@
+# Запрет доступа к системным файлам
+<FilesMatch "^\.">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+<FilesMatch "\.(log|sql|ini|config)$">
+    Order allow,deny
+    Deny from all
+</FilesMatch>
+
+# Запрет листинга директорий
+Options -Indexes
+
+# Перенаправление ошибок
+ErrorDocument 403 /accounting-system/index.php
+ErrorDocument 404 /accounting-system/index.php
+
+# Защита от XSS и других атак
+<IfModule mod_headers.c>
+    Header set X-Content-Type-Options "nosniff"
+    Header set X-Frame-Options "SAMEORIGIN"
+    Header set X-XSS-Protection "1; mode=block"
+</IfModule>
